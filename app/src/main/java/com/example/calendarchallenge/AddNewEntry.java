@@ -4,6 +4,7 @@ package com.example.calendarchallenge;
         import android.app.ProgressDialog;
         import android.content.Intent;
         import android.graphics.Bitmap;
+        import android.media.Image;
         import android.net.Uri;
         import android.provider.SyncStateContract;
         import android.support.annotation.NonNull;
@@ -18,6 +19,9 @@ package com.example.calendarchallenge;
         import android.widget.ImageView;
         import android.widget.Toast;
 
+        import com.bumptech.glide.Glide;
+        import com.bumptech.glide.annotation.GlideModule;
+        import com.bumptech.glide.module.AppGlideModule;
         import com.google.android.gms.auth.api.signin.internal.Storage;
         import com.google.android.gms.tasks.OnFailureListener;
         import com.google.android.gms.tasks.OnSuccessListener;
@@ -53,6 +57,8 @@ public class AddNewEntry extends AppCompatActivity {
     String eventDetails;
 
     Button addEntryButton;
+
+    ImageView glideView;
 
     public AddNewEntry() {
         this.myCalendar = myCalendar;
@@ -106,6 +112,13 @@ public class AddNewEntry extends AppCompatActivity {
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        StorageReference imagesRef = storageReference.child("images/");
+
+        String imageurl = "https://firebasestorage.googleapis.com/v0/b/ecen-489-final-project.appspot.com/o/images%2Fimage1.jpg?alt=media&token=fc2f7aca-9551-41b4-9a62-3ea27101d814";
+        glideView = (ImageView) findViewById(R.id.glideImageView);
+        Glide.with(this)
+                .load(imageurl)
+                .into(glideView);
     }
 
     private void addEntryFunction() {
