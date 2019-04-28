@@ -9,6 +9,7 @@ package com.example.calendarchallenge;
         import android.support.annotation.NonNull;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
+        import android.text.TextUtils;
         import android.util.Base64;
         import android.view.View;
         import android.widget.Button;
@@ -69,6 +70,8 @@ public class AddNewEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_entry);
 
+        EditText titleText = findViewById(R.id.titleTextView);
+
         Intent camIntent = getIntent();
         pictureBitmap = camIntent.getParcelableExtra("picture");
 
@@ -107,32 +110,43 @@ public class AddNewEntry extends AppCompatActivity {
 
     private void addEntryFunction() {
         uploadImage();
-        Intent goBackToCalendarIntent = new Intent(this, CalendarActivity.class);
-        startActivity(goBackToCalendarIntent);
+        //Intent goBackToCalendarIntent = new Intent(this, CalendarActivity.class);
+        //startActivity(goBackToCalendarIntent);
     }
 
     private void uploadImage() {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        pictureBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] data = baos.toByteArray();
+        EditText temp = findViewById(R.id.titleTextView);
+        String eventTitle = temp.getText().toString();
+        if (TextUtils.isEmpty(eventTitle)) {
+            Toast.makeText(AddNewEntry.this, "Title required", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            pictureBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] data = baos.toByteArray();
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://ecen-489-final-project.appspot.com");
-        final StorageReference imagesRef = storageRef.child("images/image1.jpg");
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://ecen-489-final-project.appspot.com");
+            // final StorageReference imagesRef = storageRef.child("images/image1.jpg");
+            final StorageReference imagesRef = storageRef.child("images/" + eventTitle + ".jpg");
 
-        UploadTask uploadTask = imagesRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Task<Uri> downloadUrl = imagesRef.getDownloadUrl();
-                // Do what you want
-            }
-        });
+            UploadTask uploadTask = imagesRef.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Task<Uri> downloadUrl = imagesRef.getDownloadUrl();
+                    // Do what you want
+                }
+            });
+            Intent goBackToCalendarIntent = new Intent(this, CalendarActivity.class);
+            startActivity(goBackToCalendarIntent);
+        }
+
     }
 }
