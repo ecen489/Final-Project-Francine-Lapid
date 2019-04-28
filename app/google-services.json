@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "649011566112",
+    "firebase_url": "https://ecen-489-final-project.firebaseio.com",
+    "project_id": "ecen-489-final-project",
+    "storage_bucket": "ecen-489-final-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649011566112:android:841f5504595e7cc2",
+        "android_client_info": {
+          "package_name": "com.example.calendarchallenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649011566112-p599hl6umclu6ac9g7jqko9tj8g48lfa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6PBrT9gZiMyPrWLx556rgQFRD88CgpH4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649011566112-p599hl6umclu6ac9g7jqko9tj8g48lfa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
