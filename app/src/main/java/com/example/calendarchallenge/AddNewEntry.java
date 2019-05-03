@@ -1,13 +1,17 @@
 package com.example.calendarchallenge;
 
         import android.app.DatePickerDialog;
+        import android.app.NotificationManager;
+        import android.app.PendingIntent;
         import android.app.ProgressDialog;
+        import android.content.Context;
         import android.content.Intent;
         import android.graphics.Bitmap;
         import android.media.Image;
         import android.net.Uri;
         import android.provider.SyncStateContract;
         import android.support.annotation.NonNull;
+        import android.support.v4.app.NotificationCompat;
         import android.support.v7.app.AppCompatActivity;
         import android.os.Bundle;
         import android.text.TextUtils;
@@ -114,11 +118,11 @@ public class AddNewEntry extends AppCompatActivity {
         storageReference = storage.getReference();
         StorageReference imagesRef = storageReference.child("images/");
 
+        /*
         String imageurl = "https://firebasestorage.googleapis.com/v0/b/ecen-489-final-project.appspot.com/o/images%2Fimage1.jpg?alt=media&token=fc2f7aca-9551-41b4-9a62-3ea27101d814";
         glideView = (ImageView) findViewById(R.id.glideImageView);
-        Glide.with(this)
-                .load(imageurl)
-                .into(glideView);
+        Glide.with(this).load(imageurl).into(glideView);
+        */
     }
 
     private void addEntryFunction() {
@@ -157,9 +161,27 @@ public class AddNewEntry extends AppCompatActivity {
                     // Do what you want
                 }
             });
+
+            addNotification();
+
             Intent goBackToCalendarIntent = new Intent(this, CalendarActivity.class);
             startActivity(goBackToCalendarIntent);
         }
 
+    }
+
+    private void addNotification() {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                .setContentTitle("Notification from CalendarChallenge")
+                .setContentText("You added an event!");
+
+        Intent notificationIntent = new Intent(this, AddNewEntry.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0,builder.build());
     }
 }
